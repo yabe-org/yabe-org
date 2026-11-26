@@ -101,7 +101,7 @@ jobs:
       - run: mv "$RUNNER_TEMP"/rootfs/*.tar.zst openxr/app/assets/image.tar.zst
       - name: Build
         working-directory: openxr
-        run: ./gradlew --no-daemon assembleRelease
+        run: ../.github/scripts/retry-on-maven-rate-limit.sh ./gradlew --no-daemon assembleRelease
       - name: Sign
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -140,7 +140,7 @@ jobs:
           mv "$RUNNER_TEMP"/rootfs/*.tar.zst xreal-client/app/src/main/assets/image.tar.zst
       - name: Build
         working-directory: xreal-client
-        run: ./gradlew --no-daemon assembleRelease
+        run: ../.github/scripts/retry-on-maven-rate-limit.sh ./gradlew --no-daemon assembleRelease
       - name: Sign
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -202,7 +202,8 @@ jobs:
                 "$LICENSING_CLIENT" --activate-all --include-personal \
                   --username "$UNITY_EMAIL" --password "$UNITY_PASSWORD" || exit 1
               fi
-              make release-apk UNITY_EXECUTABLE=unity-editor
+              /work/.github/scripts/retry-on-maven-rate-limit.sh \
+                make release-apk UNITY_EXECUTABLE=unity-editor
               status=$?
               cat ~/.config/unity3d/Editor.log 2>/dev/null || true
               if [ -n "${UNITY_SERIAL:-}" ]; then
