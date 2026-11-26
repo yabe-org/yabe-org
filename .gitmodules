@@ -1,0 +1,12 @@
+[submodule "openxr"]
+	path = openxr
+	url = https://github.com/yabe-org/yabe-openxr.git
+[submodule "xreal"]
+	path = xreal
+	url = https://github.com/yabe-org/yabe-xreal.git
+[submodule "xreal-client"]
+	path = xreal-client
+	url = https://github.com/yabe-org/yabe-xreal-client.git
+[submodule "rootfs-builder"]
+	path = rootfs-builder
+	url = https://github.com/yabe-org/yabe-rootfs-builder.git
