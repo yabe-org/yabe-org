@@ -189,9 +189,13 @@ jobs:
               if [ -n "${UNITY_SERIAL:-}" ]; then
                 unity-editor -batchmode -quit -nographics -logFile - \
                   -serial "$UNITY_SERIAL" -username "$UNITY_EMAIL" -password "$UNITY_PASSWORD" || exit 1
+              elif [ -n "${UNITY_LICENSE:-}" ]; then
+                printf "%s" "$UNITY_LICENSE" | tr -d "\r" > /tmp/Unity_lic.ulf
+                unity-editor -batchmode -quit -nographics -logFile - \
+                  -manualLicenseFile /tmp/Unity_lic.ulf || exit 1
               else
-                mkdir -p ~/.local/share/unity3d/Unity
-                printf "%s" "$UNITY_LICENSE" > ~/.local/share/unity3d/Unity/Unity_lic.ulf
+                echo "UNITY_LICENSE or UNITY_SERIAL is required" >&2
+                exit 1
               fi
               make release-apk UNITY_EXECUTABLE=unity-editor
               status=$?
