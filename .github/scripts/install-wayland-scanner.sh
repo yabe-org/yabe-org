@@ -9,6 +9,10 @@
 #
 # Usage: install-wayland-scanner.sh <path to compositor/subprojects/wayland.wrap>
 # Requires: curl, tar (xz), meson, ninja, a C compiler, and expat headers.
+#
+# libdir is fixed to lib because the default depends on how Meson detects the
+# distribution (lib64 in the Unity image), and /usr/local/lib/pkgconfig is in
+# the default pkg-config search path of Debian and Ubuntu.
 set -euo pipefail
 
 wrap="$1"
@@ -33,7 +37,7 @@ echo "$source_hash  $work/$source_filename" | sha256sum -c -
 tar -xf "$work/$source_filename" -C "$work"
 
 meson setup "$work/build" "$work/$directory" \
-  --prefix=/usr/local --buildtype=release \
+  --prefix=/usr/local --libdir=lib --buildtype=release \
   -Dlibraries=false -Dscanner=true -Dtests=false \
   -Ddocumentation=false -Ddtd_validation=false
 ninja -C "$work/build"
