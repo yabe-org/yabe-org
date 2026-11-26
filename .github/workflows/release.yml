@@ -205,8 +205,6 @@ jobs:
               if [ -n "${UNITY_SERIAL:-}" ]; then
                 unity-editor -batchmode -quit -nographics -logFile - \
                   -returnlicense -username "$UNITY_EMAIL" -password "$UNITY_PASSWORD" || true
-              else
-                "$LICENSING_CLIENT" --return-ulf || true
               fi
               exit $status
             '
